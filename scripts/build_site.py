@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Download and validate current senator portraits, then build the static site."""
 from __future__ import annotations
-import json, re, sys, unicodedata, urllib.request
+import json, re, sys, time, unicodedata, urllib.request, urllib.error
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
@@ -29,11 +29,32 @@ def norm(value):
     return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
 
 def fetch(url, accept="*/*", timeout=30):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
-    with urllib.request.urlopen(req, timeout=timeout) as response:
-        if response.status != 200:
-            raise RuntimeError("HTTP " + str(response.status))
-        return response.read(), response.headers.get("Content-Type", "").split(";")[0].lower()
+    # External image hosts occasionally return HTTP 429. Retry rate limits and transient
+    # transport failures instead of treating a temporary image-host throttle as a missing photo.
+    last_error = None
+    for attempt in range(5):
+        req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                if response.status != 200:
+                    raise RuntimeError("HTTP " + str(response.status))
+                return response.read(), response.headers.get("Content-Type", "").split(";")[0].lower()
+        except urllib.error.HTTPError as exc:
+            last_error = exc
+            if exc.code not in (429, 500, 502, 503, 504) or attempt == 4:
+                raise
+            retry_after = exc.headers.get("Retry-After", "")
+            try:
+                delay = min(30, max(2, int(retry_after)))
+            except (TypeError, ValueError):
+                delay = min(20, 3 * (attempt + 1))
+            time.sleep(delay)
+        except (urllib.error.URLError, TimeoutError) as exc:
+            last_error = exc
+            if attempt == 4:
+                raise
+            time.sleep(min(15, 2 * (attempt + 1)))
+    raise RuntimeError("Download failed after retries: " + str(last_error))
 
 def load_members():
     errors = []
