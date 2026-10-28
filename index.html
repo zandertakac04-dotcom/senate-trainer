@@ -50,12 +50,12 @@
 <script>
 (function(){
 "use strict";
-const $=id=>document.getElementById(id),KEY="senator-face-trainer-progress-v2";
+const $=id=>document.getElementById(id),KEY="senator-face-trainer-progress-v3";
 let senators=[],progress=loadProgress(),queue=[],practiceSet=[],clearedIds=new Set(),sessionIndex=0,sessionMode="full",sessionSize="10",sessionIsBatch=false,practiceStage="learn",practiceRound=1,current=null,sessionMisses=0,firstTry=0,streakBroken=false,phase="initial",photoToken=0,states=[];
 function blankSkills(){return {nameState:false,stateNames:false,faces:false,party:false,full:false}}
 function loadProgress(){try{const p=JSON.parse(localStorage.getItem(KEY)||"{}");return {totalMisses:Number(p.totalMisses)||0,byId:p.byId||{}}}catch(e){return {totalMisses:0,byId:{}}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(progress))}catch(e){}updateStats()}
-function record(s){if(!progress.byId[s.id])progress.byId[s.id]={mastered:false,missCount:0,needsReview:false,reviewed:false};const r=progress.byId[s.id];if(!r.skills){r.skills=blankSkills();if(r.mastered){r.skills.nameState=true;r.skills.faces=true;r.skills.party=true;r.skills.full=true}}else r.skills=Object.assign(blankSkills(),r.skills);return r}
+function record(s){if(!progress.byId[s.id])progress.byId[s.id]={mastered:false,missCount:0,needsReview:false,reviewed:false};const r=progress.byId[s.id];if(!r.skills){r.skills=blankSkills();r.mastered=false}else r.skills=Object.assign(blankSkills(),r.skills);return r}
 function norm(x){return String(x||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ")}
 function distance(a,b){a=String(a);b=String(b);const m=a.length,n=b.length,d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1)}return d[m][n]}
 function close(a,b){if(a===b)return true;if(!a||!b)return false;const n=Math.max(a.length,b.length);return distance(a,b)<=(n>=8?2:1)}
