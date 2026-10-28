@@ -1,19 +1,30 @@
 # Senator Face Memory Trainer
 
-A browser-based typing quiz for all 100 U.S. senators serving on October 28, 2026. Each question shows a real portrait and asks for the senator's name and state. Common small spelling mistakes are accepted. When an answer is wrong, the trainer immediately reveals the correct answer and lets you continue.
+A browser-based typed-answer learner for all 100 U.S. senators serving on October 28, 2026. Each question shows a real portrait and asks for the senator's name and state. The checker accepts small spelling errors and optional middle names; wrong answers immediately reveal the correct name and state and can be followed by the next question.
 
-## Publish the website
+## How it works
 
-The GitHub Actions workflow downloads each senator's portrait from the United States Images of Congress archive, using the member's Bioguide ID from the public congress-legislators dataset. It validates that all 100 real portraits downloaded before deploying, then bundles the image files with the site so quiz-time photos are same-site files.
+- Practice 10, all 100, alphabetical order, or review previously missed senators.
+- Saves learning progress and review flags in the browser.
+- Downloads congressional portraits during the GitHub Actions build and serves the image files from this site. The quiz does not rely on external photo URLs while you study.
+- The build validates the full set and fails rather than publish if any portrait is missing.
 
-1. In the repository settings, open **Settings → Pages**.
-2. Set **Build and deployment → Source** to **GitHub Actions**.
-3. Open **Actions** and select **Build and deploy Senator Face Memory Trainer**.
-4. Run the workflow (or push a commit). It refuses to deploy if any portrait is missing.
-5. When the workflow succeeds, use the website URL shown in the Pages deployment.
+## Publishing
 
-Portrait source: https://github.com/unitedstates/images (public-domain congressional portraits).
-Member ID data: https://github.com/unitedstates/congress-legislators
-Official roster: https://www.senate.gov/senators/index.htm
+Repository: https://github.com/zandertakac04-dotcom/senate-trainer
 
-The roster is a dated snapshot (October 28, 2026); it should be checked and refreshed when membership changes.
+A push to `main` runs `.github/workflows/deploy-pages.yml`. The workflow enables GitHub Pages, downloads and validates the 100 portrait files, builds the site, and deploys it. When the run succeeds, the site URL is:
+
+https://zandertakac04-dotcom.github.io/senate-trainer/
+
+You can check build results under the repository's **Actions** tab.
+
+## Data and portrait sources
+
+- Official Senate roster: https://www.senate.gov/senators/index.htm
+- Congress-legislators public member dataset: https://github.com/unitedstates/congress-legislators
+- Images of Congress archive: https://github.com/unitedstates/images
+
+The images archive documents its congressional portraits as public domain in the United States. A few recently appointed senators' portraits are served from specific Wikimedia Commons versions of official public-domain portraits when the main archive does not yet contain them.
+
+The roster is a dated snapshot for October 28, 2026. Check the official Senate list and rebuild/update the roster if membership changes.
