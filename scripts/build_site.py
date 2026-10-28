@@ -179,8 +179,17 @@ def main():
     for number, senator in enumerate(roster, 1):
         try:
             member, term = match_member(senator, active)
+            party_raw = norm(term.get("party", ""))
+            if party_raw in ("democrat", "democratic"):
+                party = "Democrat"
+            elif party_raw == "republican":
+                party = "Republican"
+            elif party_raw == "independent":
+                party = "Independent"
+            else:
+                raise RuntimeError("Missing or unrecognized party in official dataset: " + repr(term.get("party")))
             photo = download_portrait(member, term)
-            built_roster.append({**senator, "id": norm(senator["name"]).replace(" ", "-"),
+            built_roster.append({**senator, "party": party, "id": norm(senator["name"]).replace(" ", "-"),
                                  "bioguide": photo["bioguide"], "photo": photo["photo"]})
             manifest.append({**senator, **photo})
             print("[{0:03}/100] OK {1} ({2}) — {3}, {4:,} bytes".format(number, senator["name"], senator["abbr"], photo["bioguide"], photo["bytes"]))
