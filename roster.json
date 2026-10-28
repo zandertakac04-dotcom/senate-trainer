@@ -1,0 +1,667 @@
+[
+  {
+    "name": "Angela Alsobrooks",
+    "state": "Maryland",
+    "abbr": "MD",
+    "aliases": [
+      "Angela D. Alsobrooks"
+    ]
+  },
+  {
+    "name": "Alan Armstrong",
+    "state": "Oklahoma",
+    "abbr": "OK",
+    "aliases": []
+  },
+  {
+    "name": "Tammy Baldwin",
+    "state": "Wisconsin",
+    "abbr": "WI",
+    "aliases": []
+  },
+  {
+    "name": "Jim Banks",
+    "state": "Indiana",
+    "abbr": "IN",
+    "aliases": []
+  },
+  {
+    "name": "John Barrasso",
+    "state": "Wyoming",
+    "abbr": "WY",
+    "aliases": []
+  },
+  {
+    "name": "Michael Bennet",
+    "state": "Colorado",
+    "abbr": "CO",
+    "aliases": [
+      "Mike Bennet",
+      "Michael F. Bennet"
+    ]
+  },
+  {
+    "name": "Marsha Blackburn",
+    "state": "Tennessee",
+    "abbr": "TN",
+    "aliases": []
+  },
+  {
+    "name": "Richard Blumenthal",
+    "state": "Connecticut",
+    "abbr": "CT",
+    "aliases": []
+  },
+  {
+    "name": "Lisa Blunt Rochester",
+    "state": "Delaware",
+    "abbr": "DE",
+    "aliases": [
+      "Lisa Blunt-Rochester"
+    ]
+  },
+  {
+    "name": "Cory Booker",
+    "state": "New Jersey",
+    "abbr": "NJ",
+    "aliases": [
+      "Cory A. Booker"
+    ]
+  },
+  {
+    "name": "John Boozman",
+    "state": "Arkansas",
+    "abbr": "AR",
+    "aliases": []
+  },
+  {
+    "name": "Katie Britt",
+    "state": "Alabama",
+    "abbr": "AL",
+    "aliases": [
+      "Katie Boyd Britt"
+    ]
+  },
+  {
+    "name": "Ted Budd",
+    "state": "North Carolina",
+    "abbr": "NC",
+    "aliases": []
+  },
+  {
+    "name": "Maria Cantwell",
+    "state": "Washington",
+    "abbr": "WA",
+    "aliases": []
+  },
+  {
+    "name": "Shelley Moore Capito",
+    "state": "West Virginia",
+    "abbr": "WV",
+    "aliases": [
+      "Shelley Capito"
+    ]
+  },
+  {
+    "name": "Bill Cassidy",
+    "state": "Louisiana",
+    "abbr": "LA",
+    "aliases": []
+  },
+  {
+    "name": "Susan Collins",
+    "state": "Maine",
+    "abbr": "ME",
+    "aliases": [
+      "Susan M. Collins"
+    ]
+  },
+  {
+    "name": "Chris Coons",
+    "state": "Delaware",
+    "abbr": "DE",
+    "aliases": [
+      "Christopher Coons",
+      "Christopher A. Coons"
+    ]
+  },
+  {
+    "name": "John Cornyn",
+    "state": "Texas",
+    "abbr": "TX",
+    "aliases": []
+  },
+  {
+    "name": "Catherine Cortez Masto",
+    "state": "Nevada",
+    "abbr": "NV",
+    "aliases": []
+  },
+  {
+    "name": "Tom Cotton",
+    "state": "Arkansas",
+    "abbr": "AR",
+    "aliases": []
+  },
+  {
+    "name": "Kevin Cramer",
+    "state": "North Dakota",
+    "abbr": "ND",
+    "aliases": []
+  },
+  {
+    "name": "Mike Crapo",
+    "state": "Idaho",
+    "abbr": "ID",
+    "aliases": []
+  },
+  {
+    "name": "Ted Cruz",
+    "state": "Texas",
+    "abbr": "TX",
+    "aliases": []
+  },
+  {
+    "name": "John Curtis",
+    "state": "Utah",
+    "abbr": "UT",
+    "aliases": [
+      "John R. Curtis"
+    ]
+  },
+  {
+    "name": "Steve Daines",
+    "state": "Montana",
+    "abbr": "MT",
+    "aliases": []
+  },
+  {
+    "name": "Tammy Duckworth",
+    "state": "Illinois",
+    "abbr": "IL",
+    "aliases": []
+  },
+  {
+    "name": "Dick Durbin",
+    "state": "Illinois",
+    "abbr": "IL",
+    "aliases": [
+      "Richard Durbin",
+      "Richard J. Durbin"
+    ]
+  },
+  {
+    "name": "Joni Ernst",
+    "state": "Iowa",
+    "abbr": "IA",
+    "aliases": []
+  },
+  {
+    "name": "John Fetterman",
+    "state": "Pennsylvania",
+    "abbr": "PA",
+    "aliases": []
+  },
+  {
+    "name": "Deb Fischer",
+    "state": "Nebraska",
+    "abbr": "NE",
+    "aliases": []
+  },
+  {
+    "name": "Ruben Gallego",
+    "state": "Arizona",
+    "abbr": "AZ",
+    "aliases": []
+  },
+  {
+    "name": "Kirsten Gillibrand",
+    "state": "New York",
+    "abbr": "NY",
+    "aliases": [
+      "Kirsten E. Gillibrand"
+    ]
+  },
+  {
+    "name": "Darline Graham",
+    "state": "South Carolina",
+    "abbr": "SC",
+    "aliases": []
+  },
+  {
+    "name": "Chuck Grassley",
+    "state": "Iowa",
+    "abbr": "IA",
+    "aliases": []
+  },
+  {
+    "name": "Bill Hagerty",
+    "state": "Tennessee",
+    "abbr": "TN",
+    "aliases": []
+  },
+  {
+    "name": "Maggie Hassan",
+    "state": "New Hampshire",
+    "abbr": "NH",
+    "aliases": [
+      "Margaret Hassan",
+      "Margaret Wood Hassan"
+    ]
+  },
+  {
+    "name": "Josh Hawley",
+    "state": "Missouri",
+    "abbr": "MO",
+    "aliases": []
+  },
+  {
+    "name": "Martin Heinrich",
+    "state": "New Mexico",
+    "abbr": "NM",
+    "aliases": []
+  },
+  {
+    "name": "John Hickenlooper",
+    "state": "Colorado",
+    "abbr": "CO",
+    "aliases": [
+      "John W. Hickenlooper"
+    ]
+  },
+  {
+    "name": "Mazie Hirono",
+    "state": "Hawaii",
+    "abbr": "HI",
+    "aliases": [
+      "Mazie K. Hirono"
+    ]
+  },
+  {
+    "name": "John Hoeven",
+    "state": "North Dakota",
+    "abbr": "ND",
+    "aliases": []
+  },
+  {
+    "name": "Jon Husted",
+    "state": "Ohio",
+    "abbr": "OH",
+    "aliases": []
+  },
+  {
+    "name": "Cindy Hyde-Smith",
+    "state": "Mississippi",
+    "abbr": "MS",
+    "aliases": []
+  },
+  {
+    "name": "Ron Johnson",
+    "state": "Wisconsin",
+    "abbr": "WI",
+    "aliases": []
+  },
+  {
+    "name": "Jim Justice",
+    "state": "West Virginia",
+    "abbr": "WV",
+    "aliases": [
+      "James C. Justice",
+      "James Justice"
+    ]
+  },
+  {
+    "name": "Tim Kaine",
+    "state": "Virginia",
+    "abbr": "VA",
+    "aliases": []
+  },
+  {
+    "name": "Mark Kelly",
+    "state": "Arizona",
+    "abbr": "AZ",
+    "aliases": []
+  },
+  {
+    "name": "John Kennedy",
+    "state": "Louisiana",
+    "abbr": "LA",
+    "aliases": []
+  },
+  {
+    "name": "Andy Kim",
+    "state": "New Jersey",
+    "abbr": "NJ",
+    "aliases": []
+  },
+  {
+    "name": "Angus King",
+    "state": "Maine",
+    "abbr": "ME",
+    "aliases": [
+      "Angus S. King",
+      "Angus King Jr.",
+      "Angus S. King Jr."
+    ]
+  },
+  {
+    "name": "Amy Klobuchar",
+    "state": "Minnesota",
+    "abbr": "MN",
+    "aliases": []
+  },
+  {
+    "name": "James Lankford",
+    "state": "Oklahoma",
+    "abbr": "OK",
+    "aliases": [
+      "Jim Lankford"
+    ]
+  },
+  {
+    "name": "Mike Lee",
+    "state": "Utah",
+    "abbr": "UT",
+    "aliases": []
+  },
+  {
+    "name": "Ben Ray Luján",
+    "state": "New Mexico",
+    "abbr": "NM",
+    "aliases": [
+      "Ben Ray Lujan"
+    ]
+  },
+  {
+    "name": "Cynthia Lummis",
+    "state": "Wyoming",
+    "abbr": "WY",
+    "aliases": [
+      "Cynthia M. Lummis"
+    ]
+  },
+  {
+    "name": "Ed Markey",
+    "state": "Massachusetts",
+    "abbr": "MA",
+    "aliases": [
+      "Edward Markey",
+      "Edward J. Markey"
+    ]
+  },
+  {
+    "name": "Roger Marshall",
+    "state": "Kansas",
+    "abbr": "KS",
+    "aliases": []
+  },
+  {
+    "name": "Mitch McConnell",
+    "state": "Kentucky",
+    "abbr": "KY",
+    "aliases": []
+  },
+  {
+    "name": "Dave McCormick",
+    "state": "Pennsylvania",
+    "abbr": "PA",
+    "aliases": [
+      "David McCormick"
+    ]
+  },
+  {
+    "name": "Jeff Merkley",
+    "state": "Oregon",
+    "abbr": "OR",
+    "aliases": []
+  },
+  {
+    "name": "Ashley Moody",
+    "state": "Florida",
+    "abbr": "FL",
+    "aliases": []
+  },
+  {
+    "name": "Jerry Moran",
+    "state": "Kansas",
+    "abbr": "KS",
+    "aliases": []
+  },
+  {
+    "name": "Bernie Moreno",
+    "state": "Ohio",
+    "abbr": "OH",
+    "aliases": [
+      "Bernard Moreno"
+    ]
+  },
+  {
+    "name": "Lisa Murkowski",
+    "state": "Alaska",
+    "abbr": "AK",
+    "aliases": []
+  },
+  {
+    "name": "Chris Murphy",
+    "state": "Connecticut",
+    "abbr": "CT",
+    "aliases": [
+      "Christopher Murphy"
+    ]
+  },
+  {
+    "name": "Patty Murray",
+    "state": "Washington",
+    "abbr": "WA",
+    "aliases": []
+  },
+  {
+    "name": "Jon Ossoff",
+    "state": "Georgia",
+    "abbr": "GA",
+    "aliases": []
+  },
+  {
+    "name": "Alex Padilla",
+    "state": "California",
+    "abbr": "CA",
+    "aliases": []
+  },
+  {
+    "name": "Rand Paul",
+    "state": "Kentucky",
+    "abbr": "KY",
+    "aliases": []
+  },
+  {
+    "name": "Gary Peters",
+    "state": "Michigan",
+    "abbr": "MI",
+    "aliases": []
+  },
+  {
+    "name": "Jack Reed",
+    "state": "Rhode Island",
+    "abbr": "RI",
+    "aliases": []
+  },
+  {
+    "name": "Pete Ricketts",
+    "state": "Nebraska",
+    "abbr": "NE",
+    "aliases": []
+  },
+  {
+    "name": "Jim Risch",
+    "state": "Idaho",
+    "abbr": "ID",
+    "aliases": [
+      "James E. Risch"
+    ]
+  },
+  {
+    "name": "Jacky Rosen",
+    "state": "Nevada",
+    "abbr": "NV",
+    "aliases": []
+  },
+  {
+    "name": "Mike Rounds",
+    "state": "South Dakota",
+    "abbr": "SD",
+    "aliases": []
+  },
+  {
+    "name": "Bernie Sanders",
+    "state": "Vermont",
+    "abbr": "VT",
+    "aliases": [
+      "Bernard Sanders"
+    ]
+  },
+  {
+    "name": "Brian Schatz",
+    "state": "Hawaii",
+    "abbr": "HI",
+    "aliases": []
+  },
+  {
+    "name": "Adam Schiff",
+    "state": "California",
+    "abbr": "CA",
+    "aliases": []
+  },
+  {
+    "name": "Eric Schmitt",
+    "state": "Missouri",
+    "abbr": "MO",
+    "aliases": []
+  },
+  {
+    "name": "Chuck Schumer",
+    "state": "New York",
+    "abbr": "NY",
+    "aliases": [
+      "Charles E. Schumer",
+      "Charles Schumer"
+    ]
+  },
+  {
+    "name": "Rick Scott",
+    "state": "Florida",
+    "abbr": "FL",
+    "aliases": []
+  },
+  {
+    "name": "Tim Scott",
+    "state": "South Carolina",
+    "abbr": "SC",
+    "aliases": []
+  },
+  {
+    "name": "Jeanne Shaheen",
+    "state": "New Hampshire",
+    "abbr": "NH",
+    "aliases": []
+  },
+  {
+    "name": "Tim Sheehy",
+    "state": "Montana",
+    "abbr": "MT",
+    "aliases": []
+  },
+  {
+    "name": "Elissa Slotkin",
+    "state": "Michigan",
+    "abbr": "MI",
+    "aliases": []
+  },
+  {
+    "name": "Tina Smith",
+    "state": "Minnesota",
+    "abbr": "MN",
+    "aliases": []
+  },
+  {
+    "name": "Dan Sullivan",
+    "state": "Alaska",
+    "abbr": "AK",
+    "aliases": []
+  },
+  {
+    "name": "John Thune",
+    "state": "South Dakota",
+    "abbr": "SD",
+    "aliases": []
+  },
+  {
+    "name": "Thom Tillis",
+    "state": "North Carolina",
+    "abbr": "NC",
+    "aliases": []
+  },
+  {
+    "name": "Tommy Tuberville",
+    "state": "Alabama",
+    "abbr": "AL",
+    "aliases": []
+  },
+  {
+    "name": "Chris Van Hollen",
+    "state": "Maryland",
+    "abbr": "MD",
+    "aliases": []
+  },
+  {
+    "name": "Mark Warner",
+    "state": "Virginia",
+    "abbr": "VA",
+    "aliases": [
+      "Mark R. Warner"
+    ]
+  },
+  {
+    "name": "Raphael Warnock",
+    "state": "Georgia",
+    "abbr": "GA",
+    "aliases": [
+      "Raphael G. Warnock"
+    ]
+  },
+  {
+    "name": "Elizabeth Warren",
+    "state": "Massachusetts",
+    "abbr": "MA",
+    "aliases": []
+  },
+  {
+    "name": "Peter Welch",
+    "state": "Vermont",
+    "abbr": "VT",
+    "aliases": []
+  },
+  {
+    "name": "Sheldon Whitehouse",
+    "state": "Rhode Island",
+    "abbr": "RI",
+    "aliases": []
+  },
+  {
+    "name": "Roger Wicker",
+    "state": "Mississippi",
+    "abbr": "MS",
+    "aliases": []
+  },
+  {
+    "name": "Ron Wyden",
+    "state": "Oregon",
+    "abbr": "OR",
+    "aliases": []
+  },
+  {
+    "name": "Todd Young",
+    "state": "Indiana",
+    "abbr": "IN",
+    "aliases": []
+  }
+]
