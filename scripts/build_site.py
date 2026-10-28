@@ -15,6 +15,13 @@ DATA_URLS = [
 ]
 ARCHIVE = "https://unitedstates.github.io/images/congress/"
 UA = "SenatorFaceMemoryTrainer/1.0 (educational study tool)"
+# The archive lags recently appointed senators. These are specific, sourced official/public-domain
+# portrait files for members not yet present in the archive. Keep the IDs explicit to prevent mix-ups.
+EXTRA_IMAGE_URLS = {
+    "A000383": "https://upload.wikimedia.org/wikipedia/commons/5/55/Alan_S_Armstrong_official_portrait_%28cropped_2%29.jpg",
+    "G000608": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Darline_Graham_official_portrait_%28cropped2%29.jpg",
+    "H001104": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Sen._Jon_Husted_official_portrait%2C_119th_Congress.jpg",
+}
 
 def norm(value):
     value = unicodedata.normalize("NFKD", str(value or ""))
@@ -57,7 +64,6 @@ def match_member(senator, active):
     wanted = norm(senator["name"])
     wanted_last = wanted.split()[-1]
     state = senator["abbr"]
-    # Match on both state and surname first, to distinguish the two senators from one state.
     matches = [(m, t) for m, t in active
                if t.get("state") == state
                and norm(m.get("name", {}).get("last", "")).split()[-1:] == [wanted_last]]
@@ -68,7 +74,6 @@ def match_member(senator, active):
                 and norm(m.get("name", {}).get("official_full", "")) == wanted]
     if len(official) == 1:
         return official[0]
-    # The dataset may include legal middle names or multi-part surnames.
     broad = [(m, t) for m, t in active
              if t.get("state") == state
              and (wanted in norm(m.get("name", {}).get("official_full", ""))
@@ -86,6 +91,15 @@ def image_extension(data, content_type):
     if guessed: return guessed
     raise RuntimeError("The response was not a recognized image file")
 
+def save_image(bioguide, url):
+    data, content_type = fetch(url, "image/jpeg,image/*,*/*;q=0.8", 30)
+    if len(data) < 2500:
+        raise RuntimeError("image file too small (" + str(len(data)) + " bytes)")
+    ext = image_extension(data, content_type)
+    path = PHOTO_DIR / (bioguide + "." + ext)
+    path.write_bytes(data)
+    return {"bioguide": bioguide, "photo": "photos/" + path.name, "source_url": url, "bytes": len(data)}
+
 def download_portrait(member, term):
     bioguide = member.get("id", {}).get("bioguide")
     if not bioguide: raise RuntimeError("No Bioguide ID in congressional dataset")
@@ -93,51 +107,47 @@ def download_portrait(member, term):
     for size in ("225x275", "450x550", "original"):
         url = ARCHIVE + size + "/" + bioguide + ".jpg"
         try:
-            data, content_type = fetch(url, "image/jpeg,image/*,*/*;q=0.8", 25)
-            if len(data) < 2500: raise RuntimeError("image file too small (" + str(len(data)) + " bytes)")
-            ext = image_extension(data, content_type)
-            path = PHOTO_DIR / (bioguide + "." + ext)
-            path.write_bytes(data)
-            return {"bioguide": bioguide, "photo": "photos/" + path.name,
-                    "source_url": url, "bytes": len(data)}
+            return save_image(bioguide, url)
         except Exception as exc:
             errors.append(size + ": " + str(exc))
-    # If the public archive lacks a photo, try the image declared by the member's official Senate website.
+    # Source-specific public-domain portrait fallback for the three recently appointed members.
+    if bioguide in EXTRA_IMAGE_URLS:
+        try:
+            result = save_image(bioguide, EXTRA_IMAGE_URLS[bioguide])
+            result["fallback"] = "verified public-domain portrait"
+            return result
+        except Exception as exc:
+            errors.append("direct public-domain portrait: " + str(exc))
+    # Final fallback: inspect the official Senate member site for an image metadata tag.
     official = (term.get("url") or "").strip()
     if official.startswith("https://") and ".senate.gov" in urlparse(official).netloc:
         try:
             page_bytes, _ = fetch(official, "text/html", 25)
             page = page_bytes.decode("utf-8", "ignore")
-            pats = [
+            patterns = [
                 r'<meta[^>]+(?:property|name)=["\'](?:og:image|twitter:image)["\'][^>]+content=["\']([^"\']+)',
                 r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\'](?:og:image|twitter:image)["\']'
             ]
             image_url = ""
-            for pattern in pats:
+            for pattern in patterns:
                 match = re.search(pattern, page, re.I)
                 if match:
                     image_url = urljoin(official, match.group(1))
                     break
             if image_url.startswith("https://"):
-                data, content_type = fetch(image_url, "image/jpeg,image/*,*/*;q=0.8", 25)
-                if len(data) < 2500: raise RuntimeError("official image file too small")
-                ext = image_extension(data, content_type)
-                path = PHOTO_DIR / (bioguide + "." + ext)
-                path.write_bytes(data)
-                return {"bioguide": bioguide, "photo": "photos/" + path.name,
-                        "source_url": image_url, "bytes": len(data), "fallback": "official Senate site"}
+                result = save_image(bioguide, image_url)
+                result["fallback"] = "official Senate site"
+                return result
         except Exception as exc:
             errors.append("official website fallback: " + str(exc))
     raise RuntimeError(bioguide + ": image download failed: " + " | ".join(errors))
 
 def main():
-    roster_path = ROOT / "roster.json"
-    roster = json.loads(roster_path.read_text(encoding="utf-8"))
+    roster = json.loads((ROOT / "roster.json").read_text(encoding="utf-8"))
     if not isinstance(roster, list) or len(roster) != 100:
         raise RuntimeError("Expected exactly 100 senators in roster.json")
     if len({(s["name"], s["abbr"]) for s in roster}) != 100:
         raise RuntimeError("Duplicate senator entries in roster.json")
-
     DIST.mkdir(exist_ok=True)
     if PHOTO_DIR.exists():
         for file in PHOTO_DIR.iterdir():
@@ -149,22 +159,21 @@ def main():
         try:
             member, term = match_member(senator, active)
             photo = download_portrait(member, term)
-            built_roster.append({**senator, "id": norm(senator["name"]).replace(" ", "-"), "bioguide": photo["bioguide"], "photo": photo["photo"]})
+            built_roster.append({**senator, "id": norm(senator["name"]).replace(" ", "-"),
+                                 "bioguide": photo["bioguide"], "photo": photo["photo"]})
             manifest.append({**senator, **photo})
             print("[{0:03}/100] OK {1} ({2}) — {3}, {4:,} bytes".format(number, senator["name"], senator["abbr"], photo["bioguide"], photo["bytes"]))
         except Exception as exc:
             failures.append(senator["name"] + " (" + senator["abbr"] + "): " + str(exc))
             print("[{0:03}/100] FAIL {1}".format(number, failures[-1]), file=sys.stderr)
-
     (DIST / "photo-manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     if failures:
         raise RuntimeError("Refusing to publish a broken photo set. Failed senators:\n - " + "\n - ".join(failures))
     if len(built_roster) != 100 or len({s["bioguide"] for s in built_roster}) != 100 or len(list(PHOTO_DIR.iterdir())) != 100:
         raise RuntimeError("Portrait validation failed: expected 100 unique mapped senators and 100 image files")
-
     (DIST / "roster.json").write_text(json.dumps(built_roster, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     (DIST / "index.html").write_text((ROOT / "index.html").read_text(encoding="utf-8"), encoding="utf-8")
     print("BUILD SUCCESS: exactly 100 senator portraits downloaded, validated, and bundled in dist/photos.")
-    
+
 if __name__ == "__main__":
     main()
