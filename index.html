@@ -105,7 +105,7 @@ function startStudy(mode,size,review=false){
  if(mode==="learn")mode="faces";
  sessionMode=mode;sessionSize=String(size||"10");sessionIsBatch=!review;practiceStage="learn";practiceRound=1;streakBroken=false;clearedIds=new Set();sessionIndex=0;sessionMisses=0;firstTry=0;
  if(review){const reviews=shuffle(reviewList());queue=reviews;sessionIsBatch=false;sessionMode="faces";practiceSet=[];if(!queue.length){$("loadStatus").textContent="No missed senators to review yet. Start the Learn session first.";return}}
- else{let items=getBatch(mode,sessionSize);if($("orderSelect").value==="alphabetical")items=alpha(items);queue=items.slice();practiceSet=sessionIsBatch?items.slice():[]}
+ else{let items=mode==="faces"&&sessionSize==="all"?getBatch(mode,"reviewAll"):getBatch(mode,sessionSize);if($("orderSelect").value==="alphabetical")items=alpha(items);queue=items.slice();practiceSet=sessionIsBatch?items.slice():[]}
  if(!queue.length){$("loadStatus").textContent="No cards found for this stage.";return}
  $("homeView").classList.add("hidden");$("quizView").style.display="block";$("questionView").classList.remove("hidden");$("completeView").classList.add("hidden");$("sessionName").textContent=modeLabel();render()
 }
