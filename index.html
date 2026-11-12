@@ -14,7 +14,7 @@
 <div class="wrap">
 <header class="topbar"><div class="brand"><div class="seal" aria-hidden="true">★</div><div><h1>Senator Face Memory Trainer</h1><p>U.S. Senate · face, name, and state recall</p></div></div><div class="snapshot">Roster snapshot · October 28, 2026</div></header>
 <section id="homeView">
-<div class="hero"><p class="eyebrow">Quizlet-style typed learning</p><h2>Learn every name.<br>Then learn every face.</h2><p>Two complete 100-senator study sets. Each set starts with everyone, repeats only the cards you miss, and finishes with a full review. Your progress is saved in this browser so you can return whenever you want.</p></div>
+<div class="hero"><p class="eyebrow">Quizlet-style typed learning</p><h2>Learn all 100 senators.</h2><p>One continuous Learn session, just like Quizlet. First build each name-to-state association, then the same learning system moves into face recognition. Missed cards repeat until mastered, and your progress is saved so you can return anytime.</p></div>
 <div class="stats">
 <div class="stat"><strong id="statStateLearned">0 / 100</strong><span>Names &amp; states mastered</span></div>
 <div class="stat"><strong id="statPairLearned">100</strong><span>Senators in each set</span></div>
@@ -24,15 +24,13 @@
 <div class="panel"><div class="panel-inner">
 <h3 class="section-title">Your study sets</h3>
 <p class="section-sub">Each set contains all 100 senators. Round 1 covers everyone; later rounds focus on missed cards. Complete both sets at your own pace, and return for a full review whenever you like.</p>
-<div class="stage-grid">
-<div class="stage-card"><p class="stage-kicker">Set 1 · Build the associations</p><h4>Senator name → State</h4><p>See the senator’s name and type the state. Learn the complete roster before adding photographs.</p><div class="stage-actions"><button class="all-action" data-start-mode="nameState" data-size="all" disabled>Continue learning</button><button data-start-mode="nameState" data-size="reviewAll" disabled>Review all 100</button></div></div>
-<div class="stage-card"><p class="stage-kicker">Set 2 · Face recognition</p><h4>Face → Name + State</h4><p>See an official portrait and type both the senator’s full name and their state. Unlocks after Set 1 is mastered.</p><div class="stage-actions"><button class="all-action" data-start-mode="faces" data-size="all" disabled>Continue learning</button><button data-start-mode="faces" data-size="reviewAll" disabled>Review all 100</button></div><div class="hint" id="faceUnlockHint">Complete Set 1 to unlock this set.</div></div>
-</div>
+<div class="stage-card"><p class="stage-kicker">Your learning session</p><h4 id="learnStageTitle">Names &amp; states first</h4><p id="learnStageDescription">You will see each senator’s name and type the state. After mastering the roster, the session automatically moves to portraits: type the senator’s name and state.</p><div class="stage-actions"><button class="all-action" id="startLearn" type="button" disabled>Start learning</button></div></div>
+
 <div class="settings"><label for="orderSelect">Card order</label><select id="orderSelect"><option value="random">Randomized</option><option value="alphabetical">Alphabetical</option></select><span style="flex:1"></span><button class="small-btn" id="resetProgress" type="button">Reset saved progress</button></div>
-<div class="utility-actions"><button id="startReview" type="button" disabled>Review missed senators (<span id="reviewCountLabel">0</span>)</button></div>
+
 <div class="statusline" id="loadStatus" role="status" aria-live="polite">Loading the senator roster…</div>
 </div></div>
-<p class="footnote">Progress is saved in this browser. A missed answer is revealed, then you must type it correctly before moving on. Missed cards return in the next round; after clearing the set, all 100 return for a final mastery round. <a href="https://www.senate.gov/senators/index.htm" target="_blank" rel="noopener">Official Senate roster</a>.</p>
+<p class="footnote">Progress is saved in this browser. A missed answer is revealed, then you must type it correctly before moving on. Missed cards return in smaller rounds, followed by a final full-set mastery round. <a href="https://www.senate.gov/senators/index.htm" target="_blank" rel="noopener">Official Senate roster</a>.</p>
 </section>
 <section id="quizView" class="panel"><div class="panel-inner">
 <div class="quiz-header"><button class="link-btn" id="backHome">← All sessions</button><div class="session-name" id="sessionName">Practice 10</div></div>
@@ -69,7 +67,7 @@ function isSkillDone(item,mode){if(mode==="stateNames")return item.senators.ever
 function unitsForMode(mode){if(mode==="stateNames")return states.map(x=>({id:"statepair-"+norm(x.state).replace(/\s+/g,"-"),kind:"statePair",state:x.state,senators:x.senators}));return senators.map(s=>Object.assign({kind:"senator"},s))}
 function getBatch(mode,size){const all=unitsForMode(mode),unlearned=all.filter(x=>!isSkillDone(x,mode));if(size==="reviewAll")return all;if(size==="all")return unlearned.length?unlearned:all;const target=Number(size)||5;let chosen=shuffle(unlearned).slice(0,target);if(chosen.length<target){const selected=new Set(chosen.map(x=>x.id));const fill=shuffle(all.filter(x=>!selected.has(x.id)));chosen=chosen.concat(fill.slice(0,target-chosen.length))}return chosen}
 function reviewList(){return senators.filter(s=>record(s).needsReview)}
-function updateStats(){const count=skill=>senators.filter(s=>record(s).skills[skill]).length;$("statStateLearned").textContent=count("nameState")+" / "+senators.length;$("statFaceLearned").textContent=count("faces")+" / "+senators.length;$("statPairLearned").textContent="100";$("statPartyLearned").textContent="2×";const unlocked=!!progress.nameStateSetComplete;document.querySelectorAll('[data-start-mode="faces"]').forEach(b=>b.disabled=!unlocked);$("faceUnlockHint").textContent=unlocked?"Unlocked — Set 1 mastered.":"Complete Set 1 to unlock this set.";$("reviewCountLabel").textContent=reviewList().length;$("startReview").disabled=!reviewList().length||!unlocked}
+function updateStats(){const count=skill=>senators.filter(s=>record(s).skills[skill]).length;$("statStateLearned").textContent=count("nameState")+" / "+senators.length;$("statFaceLearned").textContent=count("faces")+" / "+senators.length;$("statPairLearned").textContent="100";$("statPartyLearned").textContent="2×";const namesDone=!!progress.nameStateSetComplete,facesDone=!!progress.facesSetComplete;$("startLearn").disabled=!senators.length;$("learnStageTitle").textContent=!namesDone?"Names & states first":!facesDone?"Now learning faces":"All senators mastered";$("learnStageDescription").textContent=!namesDone?"You will see each senator’s name and type the state. Once all 100 are mastered, this same session automatically moves to portraits: type the senator’s name and state.":!facesDone?"Names and states are mastered. Continue with portraits; type each senator’s name and state.":"You have completed both parts. Start again for a full review of all 100 senators.";$("startLearn").textContent=!namesDone?"Start learning":!facesDone?"Continue learning":"Review all 100"}
 function resetQuestionUI(){phase="initial";["nameInput","stateInput","partyInput"].forEach(id=>{$(id).disabled=false;$(id).value="";$(id).classList.remove("wrong","correct")});$("feedback").className="feedback";$("feedback").textContent="Answer the question, then check your response.";$("answerReveal").style.display="none";$("revealParty").classList.remove("hidden");$("checkButton").textContent="Check answer";$("checkButton").classList.remove("hidden");$("nextButton").classList.add("hidden")}
 function setVisualPrompt(kicker,title,sub){$("promptLabel").textContent=kicker;$("promptTitle").textContent=title;$("promptSub").textContent=sub}
 function applyQuestionMode(){
@@ -104,6 +102,7 @@ function render(){
  window.scrollTo({top:0,behavior:"smooth"})
 }
 function startStudy(mode,size,review=false){
+ if(mode==="learn")mode=progress.nameStateSetComplete?"faces":"nameState";
  sessionMode=mode;sessionSize=String(size||"10");sessionIsBatch=!review;practiceStage="learn";practiceRound=1;streakBroken=false;clearedIds=new Set();sessionIndex=0;sessionMisses=0;firstTry=0;
  if(review){const reviews=shuffle(reviewList());queue=reviews;sessionIsBatch=false;sessionMode="faces";practiceSet=[];if(!queue.length){$("loadStatus").textContent="No missed full questions yet. Try a learning stage first.";return}}
  else{let items=getBatch(mode,sessionSize);if($("orderSelect").value==="alphabetical")items=alpha(items);queue=items.slice();practiceSet=sessionIsBatch?items.slice():[]}
@@ -179,20 +178,20 @@ function finish(){
 }
 function home(){$("quizView").style.display="none";$("homeView").classList.remove("hidden");updateStats();window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll("[data-start-mode]").forEach(btn=>btn.addEventListener("click",()=>startStudy(btn.dataset.startMode,btn.dataset.size)));
-$("startReview").onclick=()=>startStudy("faces","all",true);$("checkButton").onclick=check;$("nextButton").onclick=next;$("backHome").onclick=home;$("homeAfterComplete").onclick=home;$("reviewNow").onclick=()=>startStudy("full","all",true);
+$("startLearn").onclick=()=>startStudy("learn","all");$("checkButton").onclick=check;$("nextButton").onclick=next;$("backHome").onclick=home;$("homeAfterComplete").onclick=home;$("reviewNow").onclick=()=>startStudy("learn","reviewAll");
 $("answerForm").addEventListener("submit",e=>{e.preventDefault();check()});
 ["nameInput","stateInput","partyInput"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(phase!=="done")check();else next()}}));
 $("resetProgress").onclick=()=>{if(confirm("Reset all saved learning progress and missed answers in this browser?")){progress={totalMisses:0,byId:{},nameStateSetComplete:false,facesSetComplete:false};save();$("loadStatus").textContent="Progress reset. Your next session will start with new cards."}};
-document.querySelectorAll("[data-start-mode]").forEach(btn=>btn.disabled=true);$("startReview").disabled=true;
+$("startLearn").disabled=true;
 fetch("./roster.json").then(r=>{if(!r.ok)throw new Error("Could not load roster.json");return r.json()}).then(data=>{
  if(!Array.isArray(data)||data.length!==100)throw new Error("Roster validation failed");
  senators=data.map(s=>Object.assign({id:norm(s.name).replace(/\s+/g,"-"),aliases:[]},s));
  const grouped=new Map();for(const s of senators){if(!grouped.has(s.state))grouped.set(s.state,[]);grouped.get(s.state).push(s)}
  states=Array.from(grouped.entries()).map(([state,items])=>({state,senators:alpha(items)})).sort((a,b)=>a.state.localeCompare(b.state));
- document.querySelectorAll("[data-start-mode]").forEach(btn=>btn.disabled=false);
+ $("startLearn").disabled=false;
  $("loadStatus").textContent="Roster ready: "+senators.length+" senators across "+states.length+" states. Progress is saved in this browser.";
  updateStats()
-}).catch(err=>{$("loadStatus").textContent="Roster failed to load. Refresh the site and try again. "+err.message;document.querySelectorAll("[data-start-mode]").forEach(btn=>btn.disabled=true)})
+}).catch(err=>{$("loadStatus").textContent="Roster failed to load. Refresh the site and try again. "+err.message;$("startLearn").disabled=true})
 })();
 </script>
 </body>
