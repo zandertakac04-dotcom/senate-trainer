@@ -99,6 +99,7 @@ function render(){
  }else{$("roundNotice").classList.add("hidden")}
  $("sessionName").textContent=modeLabel()+(sessionIsBatch?" · "+(practiceStage==="learn"?"Learning round "+practiceRound:"Final mastery round"):"");
  applyQuestionMode();if(isFaceMode())loadPhoto(current);else{photoToken++}
+ if(sessionMode==="faces")$("nameInput").focus({preventScroll:true});
  window.scrollTo({top:0,behavior:"smooth"})
 }
 function startStudy(mode,size,review=false){
