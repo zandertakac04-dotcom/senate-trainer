@@ -14,7 +14,7 @@
 <div class="wrap">
 <header class="topbar"><div class="brand"><div class="seal" aria-hidden="true">★</div><div><h1>Senator Face Memory Trainer</h1><p>U.S. Senate · face, name, and state recall</p></div></div><div class="snapshot">Roster snapshot · October 28, 2026</div></header>
 <section id="homeView">
-<div class="hero"><p class="eyebrow">A smarter study path</p><h2>Learn the facts.<br>Then learn the faces.</h2><p>Build one association at a time: senator → state, state → both senators, face → name and state, then party. Practice rounds shrink to only what you miss; after clearing the set, you finish with a full first-try mastery round.</p></div>
+<div class="hero"><p class="eyebrow">A smarter study path</p><h2>Learn the facts.<br>Then learn the faces.</h2><p>Build one association at a time: senator → state + party, state → both senators, then face → name and state. Start with the facts before adding portraits. Practice rounds shrink to only what you miss; after clearing the set, you finish with a full first-try mastery round.</p></div>
 <div class="stats">
 <div class="stat"><strong id="statStateLearned">0 / 100</strong><span>Names → states learned</span></div>
 <div class="stat"><strong id="statPairLearned">0 / 100</strong><span>Senators learned by state</span></div>
@@ -25,7 +25,7 @@
 <h3 class="section-title">Choose what to practice</h3>
 <p class="section-sub">Start without portraits or party questions. Work through small groups, then add one layer at a time. “All remaining” practices everything you haven’t cleared in that skill; once everything is learned, it becomes a full review.</p>
 <div class="stage-grid">
-<div class="stage-card"><p class="stage-kicker">Stage 1A · No portraits</p><h4>Name → State</h4><p>See a senator’s name and recall the state they represent. Party and face are kept out of the question.</p><div class="stage-actions"><button data-start-mode="nameState" data-size="5" disabled>5 senators</button><button data-start-mode="nameState" data-size="10" disabled>10 senators</button><button class="all-action" data-start-mode="nameState" data-size="all" disabled>All remaining</button></div></div>
+<div class="stage-card"><p class="stage-kicker">Stage 1A · No portraits</p><h4>Name → State + Party</h4><p>See a senator’s name and recall both the state they represent and their party. Build the full name-state-party association before adding portraits.</p><div class="stage-actions"><button data-start-mode="nameState" data-size="5" disabled>5 senators</button><button data-start-mode="nameState" data-size="10" disabled>10 senators</button><button class="all-action" data-start-mode="nameState" data-size="all" disabled>All remaining</button></div></div>
 <div class="stage-card"><p class="stage-kicker">Stage 1B · No portraits</p><h4>State → Both Senators</h4><p>See a state and recall both senators. This builds a mental pair for each state.</p><div class="stage-actions"><button data-start-mode="stateNames" data-size="5" disabled>5 states</button><button data-start-mode="stateNames" data-size="10" disabled>10 states</button><button class="all-action" data-start-mode="stateNames" data-size="all" disabled>All remaining</button></div></div>
 <div class="stage-card"><p class="stage-kicker">Stage 2 · Add portraits</p><h4>Face → Name + State</h4><p>Connect each face to a name and state. Party is still left out to keep the task focused.</p><div class="stage-actions"><button data-start-mode="faces" data-size="5" disabled>5 faces</button><button data-start-mode="faces" data-size="10" disabled>10 faces</button><button class="all-action" data-start-mode="faces" data-size="all" disabled>All remaining</button></div></div>
 <div class="stage-card"><p class="stage-kicker">Stage 3 · Full recall</p><h4>Face → Name + State + Party</h4><p>Combine everything only after you’ve built the simpler associations first.</p><div class="stage-actions"><button data-start-mode="full" data-size="5" disabled>5 senators</button><button data-start-mode="full" data-size="10" disabled>10 senators</button><button class="all-action" data-start-mode="full" data-size="all" disabled>All remaining</button></div></div>
@@ -77,9 +77,9 @@ function setVisualPrompt(kicker,title,sub){$("promptLabel").textContent=kicker;$
 function applyQuestionMode(){
  const textOnly=sessionMode==="nameState"||sessionMode==="stateNames";
  $("photoVisual").classList.toggle("hidden",textOnly);$("photoCaption").classList.toggle("hidden",textOnly);$("textPrompt").classList.toggle("hidden",!textOnly);
- $("nameField").classList.toggle("hidden",sessionMode==="nameState");$("stateField").classList.remove("hidden");$("partyField").classList.toggle("hidden",sessionMode!=="full");
+ $("nameField").classList.toggle("hidden",sessionMode==="nameState");$("stateField").classList.remove("hidden");$("partyField").classList.toggle("hidden",sessionMode!=="full"&&sessionMode!=="nameState");
  if(sessionMode==="nameState"){
-  $("questionHeading").textContent="Which state does this senator represent?";$("questionInstruction").textContent="RECALL ONE FACT · NO PORTRAIT, NO PARTY";
+  $("questionHeading").textContent="Which state does this senator represent?";$("questionInstruction").textContent="RECALL STATE + PARTY · NO PORTRAIT";
   $("nameLabel").textContent="Senator name";$("stateLabel").textContent="State represented";$("stateInput").placeholder="Type the state";setVisualPrompt("SENATOR → STATE",current.name,"Which state does this senator represent?");
  }else if(sessionMode==="stateNames"){
   $("questionHeading").textContent="Who are this state’s two senators?";$("questionInstruction").textContent="RECALL BOTH NAMES · NO PORTRAIT, NO PARTY";
@@ -113,12 +113,12 @@ function startStudy(mode,size,review=false){
  $("homeView").classList.add("hidden");$("quizView").style.display="block";$("questionView").classList.remove("hidden");$("completeView").classList.add("hidden");$("sessionName").textContent=modeLabel();render()
 }
 function evalAnswer(){
- if(sessionMode==="nameState"){const ok=stateMatches(current,$("stateInput").value);return {okN:true,okS:ok,okP:true,allOk:ok}}
+ if(sessionMode==="nameState"){const okS=stateMatches(current,$("stateInput").value),okP=partyMatches(current,$("partyInput").value);return {okN:true,okS,okP,allOk:okS&&okP}}
  if(sessionMode==="stateNames"){const okN=nameMatches(current.senators[0],$("nameInput").value),okS=nameMatches(current.senators[1],$("stateInput").value);return {okN,okS,okP:true,allOk:okN&&okS}}
  const okN=nameMatches(current,$("nameInput").value),okS=stateMatches(current,$("stateInput").value),okP=sessionMode==="full"?partyMatches(current,$("partyInput").value):true;return {okN,okS,okP,allOk:okN&&okS&&okP}
 }
 function markSkill(item){
- if(sessionMode==="nameState"){record(item).skills.nameState=true}
+ if(sessionMode==="nameState"){const r=record(item);r.skills.nameState=true;r.skills.party=true}
  else if(sessionMode==="stateNames"){for(const s of item.senators){record(s).skills.stateNames=true;record(s).skills.nameState=true;record(s).needsReview=false}}
  else if(sessionMode==="faces"){record(item).skills.faces=true;record(item).skills.nameState=true}
  else if(sessionMode==="full"){const r=record(item);r.skills.nameState=true;r.skills.faces=true;r.skills.party=true;r.skills.full=true;r.mastered=true}
@@ -126,9 +126,9 @@ function markSkill(item){
 function revealCurrent(){
  let name="",state="",party="";
  if(sessionMode==="stateNames"){name=current.senators[0].name+" · "+current.senators[1].name;state="State: "+current.state}
- else if(sessionMode==="nameState"){name=current.name;state="Correct state: "+current.state}
+ else if(sessionMode==="nameState"){name=current.name;state="Correct state: "+current.state;party="Party: "+current.party}
  else{name=current.name;state=current.state+" ("+current.abbr+")";party="Party: "+current.party}
- $("revealName").textContent=name;$("revealState").textContent=state;$("revealParty").textContent=party;$("revealParty").classList.toggle("hidden",sessionMode!=="full");$("answerReveal").style.display="block"
+ $("revealName").textContent=name;$("revealState").textContent=state;$("revealParty").textContent=party;$("revealParty").classList.toggle("hidden",sessionMode!=="full"&&sessionMode!=="nameState");$("answerReveal").style.display="block"
 }
 function setField(id,ok){const el=$(id);el.classList.remove("wrong","correct");el.classList.add(ok?"correct":"wrong");el.disabled=!!ok}
 function prepareCorrections(okN,okS,okP){
@@ -183,7 +183,7 @@ document.querySelectorAll("[data-start-mode]").forEach(btn=>btn.addEventListener
 $("startReview").onclick=()=>startStudy("full","all",true);$("checkButton").onclick=check;$("nextButton").onclick=next;$("backHome").onclick=home;$("homeAfterComplete").onclick=home;$("reviewNow").onclick=()=>startStudy("full","all",true);
 $("answerForm").addEventListener("submit",e=>{e.preventDefault();check()});
 ["nameInput","stateInput","partyInput"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(phase!=="done")check();else next()}}));
-$("resetProgress").onclick=()=>{if(confirm("Reset all saved learning progress and missed answers in this browser?")){progress={totalMisses:0,byId:{}};updateStats();$("loadStatus").textContent="Progress reset. Your next session will start with new cards."}};
+$("resetProgress").onclick=()=>{if(confirm("Reset all saved learning progress and missed answers in this browser?")){progress={totalMisses:0,byId:{}};save();$("loadStatus").textContent="Progress reset. Your next session will start with new cards."}};
 document.querySelectorAll("[data-start-mode]").forEach(btn=>btn.disabled=true);$("startReview").disabled=true;
 fetch("./roster.json").then(r=>{if(!r.ok)throw new Error("Could not load roster.json");return r.json()}).then(data=>{
  if(!Array.isArray(data)||data.length!==100)throw new Error("Roster validation failed");
