@@ -1,10 +1,12 @@
 # Senator Face Memory Trainer
 
-A browser-based typed-answer learner for all 100 U.S. senators serving on October 28, 2026. Each question shows a real portrait and asks for the senator's name and state. The checker accepts small spelling errors and optional middle names; wrong answers immediately reveal the correct name and state and let you move on.
+A browser-based typed-answer learner for all 100 U.S. senators serving on October 28, 2026. Use staged learning before portraits: first recall each senator's state and party from their name, then recall both senators for a state, then identify portraits by name and state, and finally combine name, state, and party. The checker accepts small spelling errors and aliases; when an answer is wrong it reveals the complete correct answer and requires you to retype missed fields before continuing.
 
 ## Features
 
-- Practice 10, all 100, alphabetical order, or review previously missed senators.
+- Practice groups of 5 or 10, all remaining items, alphabetical or randomized order, and previously missed senators.
+- Each learning batch repeats only items not yet cleared, then ends with a full first-try mastery round.
+- The first no-portrait stage now teaches name → state + party together.
 - Saves learning progress and review flags in your browser.
 - Downloads congressional portraits during the build and serves the image files from this website. Quiz-time photos are not loaded from third-party URLs.
 - The build validates the full set and fails rather than publish if any portrait is missing.
