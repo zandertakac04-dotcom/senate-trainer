@@ -17,13 +17,13 @@
 <div class="hero"><p class="eyebrow">Quizlet-style typed learning</p><h2>Learn all 100 senators.</h2><p>One continuous Learn session, just like Quizlet. First build each name-to-state association, then the same learning system moves into face recognition. Missed cards repeat until mastered, and your progress is saved so you can return anytime.</p></div>
 <div class="stats">
 <div class="stat"><strong id="statStateLearned">0 / 100</strong><span>Names &amp; states mastered</span></div>
-<div class="stat"><strong id="statPairLearned">100</strong><span>Senators in each set</span></div>
+<div class="stat"><strong id="statPairLearned">100</strong><span>Senators in the deck</span></div>
 <div class="stat"><strong id="statFaceLearned">0 / 100</strong><span>Faces mastered</span></div>
-<div class="stat"><strong id="statPartyLearned">2×</strong><span>Correct recall to master</span></div>
+<div class="stat"><strong id="statPartyLearned">2×</strong><span>Correct recalls to master</span></div>
 </div>
 <div class="panel"><div class="panel-inner">
-<h3 class="section-title">Your study sets</h3>
-<p class="section-sub">Each set contains all 100 senators. Round 1 covers everyone; later rounds focus on missed cards. Complete both sets at your own pace, and return for a full review whenever you like.</p>
+<h3 class="section-title">Your Learn session</h3>
+<p class="section-sub">One deck of 100 senators. Quizlet-style rounds repeat missed cards, then finish with a full-set mastery round.</p>
 <div class="stage-card"><p class="stage-kicker">Your learning session</p><h4 id="learnStageTitle">Names &amp; states first</h4><p id="learnStageDescription">You will see each senator’s name and type the state. After mastering the roster, the session automatically moves to portraits: type the senator’s name and state.</p><div class="stage-actions"><button class="all-action" id="startLearn" type="button" disabled>Start learning</button></div></div>
 
 <div class="settings"><label for="orderSelect">Card order</label><select id="orderSelect"><option value="random">Randomized</option><option value="alphabetical">Alphabetical</option></select><span style="flex:1"></span><button class="small-btn" id="resetProgress" type="button">Reset saved progress</button></div>
@@ -177,7 +177,6 @@ function finish(){
  $("reviewNow").textContent="Review all 100";$("reviewNow").disabled=false
 }
 function home(){$("quizView").style.display="none";$("homeView").classList.remove("hidden");updateStats();window.scrollTo({top:0,behavior:"smooth"})}
-document.querySelectorAll("[data-start-mode]").forEach(btn=>btn.addEventListener("click",()=>startStudy(btn.dataset.startMode,btn.dataset.size)));
 $("startLearn").onclick=()=>startStudy("learn","all");$("checkButton").onclick=check;$("nextButton").onclick=next;$("backHome").onclick=home;$("homeAfterComplete").onclick=home;$("reviewNow").onclick=()=>startStudy("learn","reviewAll");
 $("answerForm").addEventListener("submit",e=>{e.preventDefault();check()});
 ["nameInput","stateInput","partyInput"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(phase!=="done")check();else next()}}));
