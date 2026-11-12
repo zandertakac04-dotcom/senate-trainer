@@ -79,8 +79,8 @@ function applyQuestionMode(){
  $("photoVisual").classList.toggle("hidden",textOnly);$("photoCaption").classList.toggle("hidden",textOnly);$("textPrompt").classList.toggle("hidden",!textOnly);
  $("nameField").classList.toggle("hidden",sessionMode==="nameState");$("stateField").classList.remove("hidden");$("partyField").classList.toggle("hidden",sessionMode!=="full"&&sessionMode!=="nameState");
  if(sessionMode==="nameState"){
-  $("questionHeading").textContent="Which state does this senator represent?";$("questionInstruction").textContent="RECALL STATE + PARTY · NO PORTRAIT";
-  $("nameLabel").textContent="Senator name";$("stateLabel").textContent="State represented";$("stateInput").placeholder="Type the state";setVisualPrompt("SENATOR → STATE",current.name,"Which state does this senator represent?");
+  $("questionHeading").textContent="Which state and party does this senator belong to?";$("questionInstruction").textContent="RECALL TWO FACTS · STATE + PARTY · NO PORTRAIT";
+  $("nameLabel").textContent="Senator name";$("stateLabel").textContent="State represented";$("stateInput").placeholder="Type the state";$("partyHint").textContent="Democrat, Republican, or Independent. Short forms accepted.";$("partyInput").placeholder="Type the party";setVisualPrompt("SENATOR → STATE + PARTY",current.name,"Which state and party does this senator belong to?");
  }else if(sessionMode==="stateNames"){
   $("questionHeading").textContent="Who are this state’s two senators?";$("questionInstruction").textContent="RECALL BOTH NAMES · NO PORTRAIT, NO PARTY";
   $("nameField").classList.remove("hidden");$("nameLabel").textContent="First senator (A–Z)";$("stateLabel").textContent="Second senator (A–Z)";$("nameInput").placeholder="Type the first name";$("stateInput").placeholder="Type the second name";setVisualPrompt("STATE → BOTH SENATORS",current.state,"Enter both senators in alphabetical order.");
