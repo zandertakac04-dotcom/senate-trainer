@@ -173,7 +173,8 @@ function finish(){
  $("questionView").classList.add("hidden");$("completeView").classList.remove("hidden");$("progressFill").style.width="100%";$("completeFirstTry").textContent=firstTry+" / "+queue.length;$("completeMisses").textContent=sessionMisses;
  const learned=sessionMode==="stateNames"?senators.filter(s=>record(s).skills.stateNames).length:senators.filter(s=>record(s).skills[sessionMode==="nameState"?"nameState":sessionMode==="faces"?"faces":"full"]).length;
  $("completeMastered").textContent=learned+" / "+senators.length;
- if(sessionIsBatch&&practiceStage==="mastery"){if(sessionMode==="nameState")progress.nameStateSetComplete=true;if(sessionMode==="faces")progress.facesSetComplete=true;save()}\n $("completeMessage").textContent=sessionIsBatch&&practiceStage==="mastery"&&sessionMisses===0?"Perfect! You recalled every card correctly twice, including the final full-set round.":sessionMisses===0?"Great session. Your progress is saved; come back anytime for another full review.":"Session complete. Missed cards will return in your next learning rounds.";
+ if(sessionIsBatch&&practiceStage==="mastery"){if(sessionMode==="nameState")progress.nameStateSetComplete=true;if(sessionMode==="faces")progress.facesSetComplete=true;save()}
+ $("completeMessage").textContent=sessionIsBatch&&practiceStage==="mastery"&&sessionMisses===0?"Perfect! You recalled every card correctly twice, including the final full-set round.":sessionMisses===0?"Great session. Your progress is saved; come back anytime for another full review.":"Session complete. Missed cards will return in your next learning rounds.";
  $("reviewNow").disabled=!reviewList().length
 }
 function home(){$("quizView").style.display="none";$("homeView").classList.remove("hidden");updateStats();window.scrollTo({top:0,behavior:"smooth"})}
